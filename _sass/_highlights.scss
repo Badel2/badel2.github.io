@@ -1,17 +1,17 @@
+pre {
+  padding:10px 18px;
+  background: #efefef;
+  border-radius:5px;
+  border:1px solid #dadada;
+  overflow-x: auto;
+}
 
 .highlight {
   background-color: #efefef;
-  padding: 7px 7px 7px 10px;
-  border: 1px solid #ddd;
-  -moz-box-shadow: 3px 3px rgba(0,0,0,0.1);
-  -webkit-box-shadow: 3px 3px rgba(0,0,0,0.1);
-  box-shadow: 3px 3px rgba(0,0,0,0.1);
-  margin: 20px 0 20px 0;
-  overflow: scroll;
 }
 
 code {
-  font-family:'Bitstream Vera Sans Mono','Courier', monospace;
+  font-family:"Courier New", Courier, monospace;
 }
 
 .highlight .c { color: #586E75 } /* Comment */
@@ -82,3 +82,4 @@ code {
 .highlight .vg { color: #268BD2 } /* Name.Variable.Global */
 .highlight .vi { color: #268BD2 } /* Name.Variable.Instance */
 .highlight .il { color: #2AA198 } /* Literal.Number.Integer.Long */
+

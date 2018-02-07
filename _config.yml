@@ -6,7 +6,7 @@
 name: Badel2
 
 # Short bio or description (displayed in the header)
-description: Programmer
+description: Fearless concurrency
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://avatars1.githubusercontent.com/u/15879619
@@ -65,7 +65,6 @@ kramdown:
   # Jekyll 3 and GitHub Pages now only support rouge for syntax highlighting
   syntax_highlighter: rouge
   syntax_highlighter_opts:
-    # Use existing pygments syntax highlighting css
     css_class: 'highlight'
 
 # Set the Sass partials directory, as we're using @imports
