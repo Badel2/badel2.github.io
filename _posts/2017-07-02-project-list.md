@@ -12,3 +12,5 @@ Since I will probably never start writing articles for this blog, I will at leas
 * ext4-file-recovery
 * s3-chroot
 * BadelGL
+* [CompHDL]({{ site.baseurl }}/comphdl-01)
+
