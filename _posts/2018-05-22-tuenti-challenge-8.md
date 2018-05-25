@@ -19,7 +19,7 @@ My code is available here:
 <https://github.com/Badel2/TuentiChallenge8>
 
 If you have any questions or comments,
-[join the discussion on reddit](#TODO)
+[join the discussion on reddit](https://www.reddit.com/r/Badel2/comments/8ljf9x/tuenti_challenge_8/)
 .
 
 And since this turned out pretty long, if you are only interested in some
@@ -1366,7 +1366,7 @@ fn calc(&self, cache: &mut Cache) -> u32 {
 
 And the code is able to complete the submitInput! The runtime is pretty bad,
 about 3 minutes, so there must be room for optimization. I don't know if the
-algorythm is actually O(n^2), that's just something I read on stackoverflow
+algorithm is actually O(n^2), that's just something I read on stackoverflow
 while searching for optimizations.
 
 If I had to rewrite the problem I would store the grudges and the cache in one
@@ -1410,10 +1410,142 @@ faster.
 
 # P11
 
-Not all diamonds need a laser!
+### Diamonds
+
+This was the last challenge I had time to begin, but I got stuck and wasn't able
+to complete it.
+
+The goal is to maximize the number of lasers with the restriction that two
+lasers cannot cross on a diamond. A good starting point would be to set lasers
+on all the rows, and leave the columns empty. Then, check if we can add lasers
+to the columns without crossing any diamonds. So in the worst case, the
+solution would be `max(num_rows, num_cols)`. But the best solution won't always
+have a side full of lasers, sometimes we need to remove one laser to be able to
+add two, like in this example:
+
+```
+   ABCD
+     vv
+1> **
+2    **
+3>  *
+4> *
+```
+
+We remove the laser on row 2, and add two lasers on columns C and D.  I guess
+we could check all the possibilities: remove one laser, try to find a stable
+configuration, repeat with another laser. But the limits are N,M <= 500, so a
+naive approach won't work.
+
+Some trivial optimizations are removing empty rows and columns, which will
+always have a laser, and splitting the problem into clusters when some groups
+of diamonds are independent. In the example above, we can split the grid into
+two:
+
+```
+**
+ *
+*
+    **
+```
+
+And then it becomes clear that the solution is 3+2 = 5. It would be nice if all
+problems could be easily solved using recursion, but this doesn't look like it.
+
+So let's talk about the implementation. I decided to store the grid as a vector
+of vectors of indices: `Vec<Vec<u32>>`, instead of storing it as a boolean
+matrix like a normal person.
+
+```
+**
+ *
+*
+```
+
+In this example, the vector would look like this:
+
+```
+[
+    [0, 1],
+    [1],
+    [0]
+]
+```
+
+And there are a few useful helper functions: 
+* `traspose`, which transposes the
+matrix (switch rows and columns).
+* `remove_empty_rows` removes the rows with
+no diamonds, to remove the columns instead we just need to transpose and remove
+rows.
+* `roc` sorts the matrix so that the clusters can be trivially found later, using
+the
+[Rank Order Clustering](https://en.wikipedia.org/wiki/Production_flow_analysis#Rank_Order_Clustering)
+algorithm, which is actually used to group machines by products in factories,
+but hey it works here too.
+* `find_clusters` takes the sorted matrix and divides it by the non overlapping
+clusters of diamonds, which can be solved independently.
+
+Here's an example of the output of the roc algorithm, can you see the 3
+clusters?
+
+```
+**    
+  **  
+  * * 
+   *  
+    * 
+     *
+```
+
+This simple clustering technique is almost enough when combined with
+`max(num_rows, num_cols)` as the score, it only fails 8 cases from the 50 in
+testInput. So I decided to analyze these cases, and I realized something very
+important:
+
+> Not all diamonds need a laser!
+
+My algorithm would probably be the correct one if we need to secure all the
+diamonds, but it is never said that we need a laser on all the diamonds. For
+example:
+
+```
+   ABCD
+    vvv
+1  ****
+2> *   
+3> * 
+4> *
+```
+
+Here if we leave the A1 diamond unprotected, we are able to put 6 lasers
+instead of the trivial 4. 
+
+And after taking that into account, I got stuck. The only clear idea I had was
+bruteforce, but I thought that there must be some clever way. Maybe turn the
+grid into a list of constrains: a diamond at A1 means that you either put a
+laser on row 1, on column A, or nowhere. Maybe it would be enough to find the
+largest rectangles with no diamonds inside the grid? Is there some way to solve
+this using recursion?
+
+It was the last day of the challenge but I still had about 9 hours to work on
+this problem, and I managed to bruteforce the missing cases from testInput so I
+could see the submitInput, and the clusters were about 80x80, so better forget
+about bruteforce. I didn't want to skip this challenge, because the next one
+had been skipped by many people, so it was probably one of these fun challenges
+like the one with the gameboy cartridge, where you don't even know where to begin.
+And I felt like I got pretty far in this challenge, and I was only missing one
+small piece.
+
+But in the end nothing happened.
+
+# P12
+
+### usb-ip
 
 // TODO
 It turns out that writing is pretty time consuming, so come back in a week or
 so. I also plan on solving some more challenges, at least P12 which looks
 pretty fun, but the later ones will probably stay unsolved for a while.
 
+_Last updated 2018-05-25_
